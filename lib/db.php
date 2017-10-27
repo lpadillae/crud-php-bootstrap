@@ -34,4 +34,13 @@ class PDOWrapper extends PDO
         $stmt->bindParam(':price', $price);
         $stmt->execute();
     }
+
+    public function delete($id)
+    {
+        $sql = "DELETE FROM products WHERE id =:id";
+        $stmt = $this->prepare($sql);
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+    }
 }

@@ -14,6 +14,7 @@ $products = $db->listAll('products');
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="container">
@@ -37,6 +38,15 @@ $products = $db->listAll('products');
                             <td><?= $product->name ?></td>
                             <td><?= $product->description ?></td>
                             <td><?= $product->price ?></td>
+                            <td>
+                                <form action="" method="post">
+                                    <input type="hidden" name="method" value="delete">
+                                    <input type="hidden" name="product_id" value="<?= $product->id ?>">
+                                    <button type="submit">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -47,6 +57,13 @@ $products = $db->listAll('products');
     <div class="row">
         <div class="col">
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                if (isset($_POST['method']) && $_POST['method'] == 'delete' && isset($_POST['product_id'])) {
+                    $db->delete($_POST['product_id']);
+                    header('Location: ' . $_SERVER['HTTP_REFERER']);
+                    exit;
+                }
+
                 $name = $_POST['name'];
                 $description = $_POST['description'];
                 $price = $_POST['price'];
